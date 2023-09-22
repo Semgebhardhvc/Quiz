@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #40e040;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #quiz-container {
+      background-color: #9fa1f5;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #vraag-titel {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    #vraag-tekst {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    #antwoord-lijst {
+      list-style-type: none;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+
+    #antwoord-lijst li {
+      margin-bottom: 10px;
+    }
+
+    #volgende-knop {
+      background-color: #14c5e4;
+      color: #f1efef;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #volgende-knop:hover {
+      background-color: #000000;
+    }
+
+    #resultaat-container {
+      background-color: #5be040;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    #score {
+      font-size:150px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+    <h1>Quiz</h1>
+    <div id="quiz-container">
+      <h2 id="vraag-titel"></h2>
+      <p id="vraag-tekst"></p>
+      <ul id="antwoord-lijst"></ul>
+      <button id="volgende-knop" onclick="volgendeVraag()">Volgende</button>
+    </div>
+  
+    <div id="resultaat-container">
+      <p id="score"></p>
+    </div>
+  
+  <script>
+     // Quiz data
+     const vragen = [
+      {
+        vraag: "wanner eindigde ww2",
+        antwoorden: ["1945", "1946", "1943", "2000"],
+        juisteAntwoord: "1945"
+      },
+      {
+        vraag: "Welk dier is het snelste op land",
+        antwoorden: ["tijger", "wolf", " cheeta", "buffalo"],
+        juisteAntwoord: " cheeta"
+      },
+      {
+        vraag: "Hoeveel sterren heeft de Amerikaanse vlag",
+        antwoorden: ["40", "47", "50", "48"],
+        juisteAntwoord: "50"
+      },
+      {
+        vraag: "wanneer is de eerste donald duck uitgekomen",
+        antwoorden: ["oktober 1952", "november 1952", "december 1953", "januari 1954"],
+        juisteAntwoord: "oktober 1952"
+      },
+      {
+        vraag: "wanner kwam de euro",
+        antwoorden: ["1999", "2000", "1998", "2001"],
+        juisteAntwoord: "1999"
+      },
+      {
+        vraag: "welk land is de eiffeltoren",
+        antwoorden: ["engeland", "frankrijk", "spanje", "china"],
+        juisteAntwoord: "frankrijk"
+      },
+      {
+        vraag: "kleinste in de informatica les",
+        antwoorden: ["camiel", "arash", "jesper", "daan"],
+        juisteAntwoord: "jesper"
+      },
+      {
+        vraag: "hoofdstad zwitserland",
+        antwoorden: ["kopenhagen", "parijs", "bern", "madrid"],
+        juisteAntwoord: "bern"
+      },
+      {
+        vraag: "wie schilderde de sterrennacht",
+        antwoorden: ["vincent van gogh", "johannes vermeer", "rembrand van rijn ", "leonardo da vinci"],
+        juisteAntwoord: "vincent van gogh"
+      },
+      {
+        vraag: "snelste vogel",
+        antwoorden: ["torenvalk", "slechtvalk", "boomvalk", "smelleken"],
+        juisteAntwoord: "slechtvalk"
+      },
+     
+     
+    ];
+
+    let huidigeVraagIndex = 0;
+    let score = 0;
+
+    function weergeefVraag() {
+      const huidigeVraag = vragen[huidigeVraagIndex];
+      document.getElementById('vraag-titel').textContent = `Vraag ${huidigeVraagIndex + 1}:`;
+      document.getElementById('vraag-tekst').textContent = huidigeVraag.vraag;
+
+      const antwoordLijst = document.getElementById('antwoord-lijst');
+      antwoordLijst.innerHTML = "";
+
+      for (let i = 0; i < huidigeVraag.antwoorden.length; i++) {
+        const antwoord = huidigeVraag.antwoorden[i];
+        const antwoordItem = document.createElement('li');
+        antwoordItem.innerHTML = `<input type="radio" name="antwoord" value="${antwoord}"> ${antwoord}`;
+        antwoordLijst.appendChild(antwoordItem);
+      }
+    }
+
+    function volgendeVraag() {
+      const geselecteerdAntwoord = document.querySelector('input[name="antwoord"]:checked');
+
+      if (geselecteerdAntwoord) {
+        const antwoord = geselecteerdAntwoord.value;
+
+        if (antwoord === vragen[huidigeVraagIndex].juisteAntwoord) {
+          score++;
+        }
+
+        huidigeVraagIndex++;
+        geselecteerdAntwoord.checked = false;
+
+        if (huidigeVraagIndex === vragen.length) {
+          weergeefResultaat();
+        } else {
+          weergeefVraag();
+        }
+      }
+    }
+
+    function weergeefResultaat() {
+      document.getElementById('quiz-container').style.display = "none";
+      document.getElementById('resultaat-container').style.display = "block";
+      document.getElementById('score').textContent = `Je score is : ${score}/${vragen.length}`;
+    }
+
+    weergeefVraag();
+  </script>
+</body>
+</html>
